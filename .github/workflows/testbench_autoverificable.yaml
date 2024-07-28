@@ -1,0 +1,320 @@
+name: Testbench autoverificable
+run-name: ${{ github.actor }} está corriendo un testbench
+on: [pull_request]
+jobs: 
+  Verificando_cambios:
+    runs-on: ubuntu-latest
+    outputs:
+      ejercicio1 : ${{ steps.filter.outputs.ejercicio1 }}
+      ejercicio2: ${{ steps.filter.outputs.ejercicio2 }}
+      ejercicio3: ${{ steps.filter.outputs.ejercicio3 }}
+      ejercicio4_full_adder : ${{ steps.filter.outputs.ejercicio4_full_adder }}
+      ejercicio4_ripple_carry_adder : ${{ steps.filter.outputs.ejercicio4_ripple_carry_adder }}
+      ejercicio4_carry_lookahead_adder : ${{ steps.filter.outputs.ejercicio4_carry_lookahead_adder }}
+      ejercicio5: ${{ steps.filter.outputs.ejercicio5 }}
+
+    steps:
+    - name: Descargando el código del repositorio
+      uses: actions/checkout@v4
+    - name: Verificando cambios
+      uses: dorny/paths-filter@v3
+      id: filter
+      with:
+        filters: |
+          ejercicio1:
+            - 'ejercicio1/**/*.sv'
+          ejercicio2:
+            - 'ejercicio2/**/*.sv'
+          ejercicio3:
+            - 'ejercicio3/**/*.sv'
+          ejercicio4_full_adder:
+            - 'ejercicio4/fa/**/*.sv'
+          ejercicio4_ripple_carry_adder:
+            - 'ejercicio4/rca/**/*.sv'
+          ejercicio4_carry_lookahead_adder:
+            - 'ejercicio4/cla/**/*.sv'
+          ejercicio5:
+            - 'ejercicio5/**/*.sv'
+
+
+  ejercicio1:
+    needs: Verificando_cambios
+    if: ${{ needs.Verificando_cambios.outputs.ejercicio1 == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ejercicio1/testing
+    steps:
+      - name: Descargando el código del repositorio
+        uses: actions/checkout@v4
+      - name: Instalando iverilog
+        run: sudo apt-get install iverilog
+      - name: Configurando Python
+        uses: actions/setup-python@v5
+        with: 
+          python-version: '3.10'
+      - name: Instalando dependencias
+        run: pip install cocotb==1.8.1 pytest 
+      - run: make
+      - name: Analizando resultados
+        uses: jannekem/run-python-script-action@v1.7
+        with:
+          script: |
+            import xml.etree.ElementTree as ET
+            import sys
+            try:
+              tree = ET.parse("ejercicio1/testing/results.xml")
+              root = tree.getroot()
+              if "Test failed" in ET.tostring(root).decode():
+                print(f"Se encontraron errores durante la ejecución del testbench.")
+                sys.exit(1)
+              else:
+                print(f"Ejecución del testbench exitosa.")
+                sys.exit(0)
+            except Exception as e:
+              print("An error occurred:", e)
+              sys.exit(1)
+
+
+  ejercicio2:
+    needs: Verificando_cambios
+    if: ${{ needs.Verificando_cambios.outputs.ejercicio2 == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ejercicio2/testing
+    steps:
+      - name: Descargando el código del repositorio
+        uses: actions/checkout@v4
+      - name: Instalando iverilog
+        run: sudo apt-get install iverilog
+      - name: Configurando Python
+        uses: actions/setup-python@v5
+        with: 
+          python-version: '3.10'
+      - name: Instalando dependencias
+        run: pip install cocotb==1.8.1 pytest
+      - run: make
+      - name: Analizando resultados
+        uses: jannekem/run-python-script-action@v1.7
+        with:
+          script: |
+            import xml.etree.ElementTree as ET
+            import sys
+            try:
+              tree = ET.parse("ejercicio2/testing/results.xml")
+              root = tree.getroot()
+              if "Test failed" in ET.tostring(root).decode():
+                print(f"Se encontraron errores durante la ejecución del testbench.")
+                sys.exit(1)
+              else:
+                print(f"Ejecución del testbench exitosa.")
+                sys.exit(0)
+            except Exception as e:
+              print("An error occurred:", e)
+              sys.exit(1)
+
+
+  ejercicio3:
+    needs: Verificando_cambios
+    if: ${{ needs.Verificando_cambios.outputs.ejercicio3 == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ejercicio3/testing
+    steps:
+      - name: Descargando el código del repositorio
+        uses: actions/checkout@v4
+      - name: Instalando iverilog
+        run: sudo apt-get install iverilog
+      - name: Configurando Python
+        uses: actions/setup-python@v5
+        with: 
+          python-version: '3.10'
+      - name: Instalando dependencias
+        run: pip install cocotb==1.8.1 pytest
+      - run: make
+      - name: Analizando resultados
+        uses: jannekem/run-python-script-action@v1.7
+        with:
+          script: |
+            import xml.etree.ElementTree as ET
+            import sys
+            try:
+              tree = ET.parse("ejercicio3/testing/results.xml")
+              root = tree.getroot()
+              if "Test failed" in ET.tostring(root).decode():
+                print(f"Se encontraron errores durante la ejecución del testbench.")
+                sys.exit(1)
+              else:
+                print(f"Ejecución del testbench exitosa.")
+                sys.exit(0)
+            except Exception as e:
+              print("An error occurred:", e)
+              sys.exit(1)
+              
+
+  ejercicio4_full_adder:
+    needs: Verificando_cambios
+    if: ${{ needs.Verificando_cambios.outputs.ejercicio4_full_adder == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ejercicio4/fa/testing
+    steps:
+      - name: Descargando el código del repositorio
+        uses: actions/checkout@v4
+      - name: Instalando iverilog
+        run: sudo apt-get install iverilog
+      - name: Configurando Python
+        uses: actions/setup-python@v5
+        with: 
+          python-version: '3.10'
+      - name: Instalando dependencias
+        run: pip install cocotb==1.8.1 pytest
+      - run: make
+      - name: Analizando resultados
+        uses: jannekem/run-python-script-action@v1.7
+        with:
+          script: |
+            import xml.etree.ElementTree as ET
+            import sys
+            try:
+              tree = ET.parse("ejercicio4/fa/testing/results.xml")
+              root = tree.getroot()
+              if "Test failed" in ET.tostring(root).decode():
+                print(f"Se encontraron errores durante la ejecución del testbench.")
+                sys.exit(1)
+              else:
+                print(f"Ejecución del testbench exitosa.")
+                sys.exit(0)
+            except Exception as e:
+              print("An error occurred:", e)
+              sys.exit(1)
+
+
+  ejercicio4_ripple_carry_adder:
+    needs: Verificando_cambios
+    if: ${{ needs.Verificando_cambios.outputs.ejercicio4_ripple_carry_adder == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ejercicio4/rca/testing
+    steps:
+      - name: Descargando el código del repositorio
+        uses: actions/checkout@v4
+      - name: Instalando iverilog
+        run: sudo apt-get install iverilog
+      - name: Configurando Python
+        uses: actions/setup-python@v5
+        with: 
+          python-version: '3.10'
+      - name: Instalando dependencias
+        run: pip install cocotb==1.8.1 pytest
+      - run: make
+      - name: Analizando resultados
+        uses: jannekem/run-python-script-action@v1.7
+        with:
+          script: |
+            import xml.etree.ElementTree as ET
+            import sys
+            try:
+              tree = ET.parse("ejercicio4/rca/testing/results.xml")
+              root = tree.getroot()
+              if "Test failed" in ET.tostring(root).decode():
+                print(f"Se encontraron errores durante la ejecución del testbench.")
+                sys.exit(1)
+              else:
+                print(f"Ejecución del testbench exitosa.")
+                sys.exit(0)
+            except Exception as e:
+              print("An error occurred:", e)
+              sys.exit(1)
+
+
+  ejercicio4_carry_lookahead_adder:
+    needs: Verificando_cambios
+    if: ${{ needs.Verificando_cambios.outputs.ejercicio4_carry_lookahead_adder == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ejercicio4/cla/testing
+    steps:
+      - name: Descargando el código del repositorio
+        uses: actions/checkout@v4
+      - name: Instalando iverilog
+        run: sudo apt-get install iverilog
+      - name: Configurando Python
+        uses: actions/setup-python@v5
+        with: 
+          python-version: '3.10'
+      - name: Instalando dependencias
+        run: pip install cocotb==1.8.1 pytest
+      - run: make
+      - name: Analizando resultados
+        uses: jannekem/run-python-script-action@v1.7
+        with:
+          script: |
+            import xml.etree.ElementTree as ET
+            import sys
+            try:
+              tree = ET.parse("ejercicio4/cla/testing/results.xml")
+              root = tree.getroot()
+              if "Test failed" in ET.tostring(root).decode():
+                print(f"Se encontraron errores durante la ejecución del testbench.")
+                sys.exit(1)
+              else:
+                print(f"Ejecución del testbench exitosa.")
+                sys.exit(0)
+            except Exception as e:
+              print("An error occurred:", e)
+              sys.exit(1)
+
+
+  ejercicio5:
+    needs: Verificando_cambios
+    if: ${{ needs.Verificando_cambios.outputs.ejercicio5 == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ejercicio5/testing
+    steps:
+      - name: Descargando el código del repositorio
+        uses: actions/checkout@v4
+      - name: Instalando iverilog
+        run: sudo apt-get install iverilog
+      - name: Configurando Python
+        uses: actions/setup-python@v5
+        with: 
+          python-version: '3.10'
+      - name: Instalando dependencias
+        run: pip install cocotb==1.8.1 pytest
+      - run: make
+      - name: Analizando resultados
+        uses: jannekem/run-python-script-action@v1.7
+        with:
+          script: |
+            import xml.etree.ElementTree as ET
+            import sys
+            try:
+              tree = ET.parse("ejercicio5/testing/results.xml")
+              root = tree.getroot()
+              if "Test failed" in ET.tostring(root).decode():
+                print(f"Se encontraron errores durante la ejecución del testbench.")
+                sys.exit(1)
+              else:
+                print(f"Ejecución del testbench exitosa.")
+                sys.exit(0)
+            except Exception as e:
+              print("An error occurred:", e)
+              sys.exit(1)
+
+
+
+
+
+
+
+
+
+
