@@ -8,4 +8,4 @@ SOURCES := ${current_dir}/../switches_leds.sv
 XDC := ${current_dir}/Basys-3-Master.xdc
 
 #include <path to f4pga-examples root directory>/common/common.mk
-include ${current_dir}/common.mk
+include ${current_dir}/f4pga-examples/common/common.mk
