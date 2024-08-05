@@ -1,6 +1,6 @@
 name: Testbench autoverificable
 run-name: ${{ github.actor }} está corriendo un testbench
-on: [pull_request]
+on: [push]
 jobs: 
   Verificando_cambios:
     runs-on: ubuntu-latest
@@ -37,7 +37,7 @@ jobs:
             - 'ejercicio5/**/*.sv'
 
 
-  ejercicio1:
+  testbench_ejercicio1:
     needs: Verificando_cambios
     if: ${{ needs.Verificando_cambios.outputs.ejercicio1 == 'true' }}
     runs-on: ubuntu-latest
@@ -76,7 +76,20 @@ jobs:
               sys.exit(1)
 
 
-  ejercicio2:
+  sintesis_ejercicio1:
+    needs: testbench_ejercicio1
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ejercicio1/synthesis
+    steps:
+      - name: Descargando el código del repositorio
+        uses: actions/checkout@v4
+      - name: Sintetizando módulo(s)
+        run: bash ../../.github/scripts/synthesis_script.sh
+
+
+  testbench_ejercicio2:
     needs: Verificando_cambios
     if: ${{ needs.Verificando_cambios.outputs.ejercicio2 == 'true' }}
     runs-on: ubuntu-latest
@@ -115,7 +128,20 @@ jobs:
               sys.exit(1)
 
 
-  ejercicio3:
+  sintesis_ejercicio2:
+    needs: testbench_ejercicio2
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ejercicio2/synthesis
+    steps:
+      - name: Descargando el código del repositorio
+        uses: actions/checkout@v4
+      - name: Sintetizando módulo(s)
+        run: bash ../../.github/scripts/synthesis_script.sh -a
+
+
+  testbench_ejercicio3:
     needs: Verificando_cambios
     if: ${{ needs.Verificando_cambios.outputs.ejercicio3 == 'true' }}
     runs-on: ubuntu-latest
@@ -152,9 +178,22 @@ jobs:
             except Exception as e:
               print("An error occurred:", e)
               sys.exit(1)
-              
 
-  ejercicio4_full_adder:
+
+  sintesis_ejercicio3:
+    needs: testbench_ejercicio3
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ejercicio3/synthesis
+    steps:
+      - name: Descargando el código del repositorio
+        uses: actions/checkout@v4
+      - name: Sintetizando módulo(s)
+        run: bash ../../.github/scripts/synthesis_script.sh
+
+
+  testbench_ejercicio4_full_adder:
     needs: Verificando_cambios
     if: ${{ needs.Verificando_cambios.outputs.ejercicio4_full_adder == 'true' }}
     runs-on: ubuntu-latest
@@ -193,7 +232,20 @@ jobs:
               sys.exit(1)
 
 
-  ejercicio4_ripple_carry_adder:
+  sintesis_ejercicio4_fa:
+    needs: testbench_ejercicio4_full_adder
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ejercicio4/fa/synthesis
+    steps:
+      - name: Descargando el código del repositorio
+        uses: actions/checkout@v4
+      - name: Sintetizando módulo(s)
+        run: bash ../../../.github/scripts/synthesis_script.sh
+
+
+  testbench_ejercicio4_ripple_carry_adder:
     needs: Verificando_cambios
     if: ${{ needs.Verificando_cambios.outputs.ejercicio4_ripple_carry_adder == 'true' }}
     runs-on: ubuntu-latest
@@ -232,7 +284,20 @@ jobs:
               sys.exit(1)
 
 
-  ejercicio4_carry_lookahead_adder:
+  sintesis_ejercicio4_rca:
+    needs: testbench_ejercicio4_ripple_carry_adder
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ejercicio4/rca/synthesis
+    steps:
+      - name: Descargando el código del repositorio
+        uses: actions/checkout@v4
+      - name: Sintetizando módulo(s)
+        run: bash ../../../.github/scripts/synthesis_script.sh
+          
+
+  testbench_ejercicio4_carry_lookahead_adder:
     needs: Verificando_cambios
     if: ${{ needs.Verificando_cambios.outputs.ejercicio4_carry_lookahead_adder == 'true' }}
     runs-on: ubuntu-latest
@@ -271,7 +336,20 @@ jobs:
               sys.exit(1)
 
 
-  ejercicio5:
+  sintesis_ejercicio4_cla:
+    needs: testbench_ejercicio4_carry_lookahead_adder
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ejercicio4/cla/synthesis
+    steps:
+      - name: Descargando el código del repositorio
+        uses: actions/checkout@v4
+      - name: Sintetizando módulo(s)
+        run: bash ../../../.github/scripts/synthesis_script.sh
+
+        
+  testbench_ejercicio5:
     needs: Verificando_cambios
     if: ${{ needs.Verificando_cambios.outputs.ejercicio5 == 'true' }}
     runs-on: ubuntu-latest
@@ -310,11 +388,14 @@ jobs:
               sys.exit(1)
 
 
-
-
-
-
-
-
-
-
+  sintesis_ejercicio5:
+    needs: testbench_ejercicio5
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ejercicio5/synthesis
+    steps:
+      - name: Descargando el código del repositorio
+        uses: actions/checkout@v4
+      - name: Sintetizando módulo(s)
+        run: bash ../../.github/scripts/synthesis_script.sh
