@@ -1,6 +1,6 @@
 name: Testbench autoverificable
 run-name: ${{ github.actor }} está corriendo un testbench
-on: [push]
+on: [pull_request]
 jobs: 
   Verificando_cambios:
     runs-on: ubuntu-latest
