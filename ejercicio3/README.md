@@ -1,4 +1,4 @@
-# Decodificador para display de 7 segmentos
+# Ejercicio 3: Decodificador para display de 7 segmentos
 
 ## 1. Abreviaturas y definiciones
 - **FPGA**: Field Programmable Gate Arrays
